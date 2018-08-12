@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+Fractions Exercise
+</title>
+</head>
+
+<body>
+
+<h1>Fractions Exercise making use of HCF</h1>
+
+<p>Use TAB, SHIFT+TAB and ENTER to do this exercise. When your answer is correct, click "Next".</p>
+
+<h2>Score: <a id="score">score</a></h2>
+
+<h3>Find the greatest/highest common factor of <a id="demo1">hi</a> and <a id="demo2">bye</a>:</h3>
+
+<input type="text" id="hcm" value="">
+
+<button id="hcmBtn" onclick="verifyHCF()">OK</button>
+
+<p id="alert1">Waiting for input ...</p>
+
+<h3>Now simplify the fraction <a id="demo3">hi</a> / <a id="demo4">bye</a>:</h3>
+<p><b>Hint:</b> Divide the given numbers by the correct answer of the question before.</p>
+
+<input type="text" id="numer" value=""> / <input type="text" id="denom" value="">
+
+<button id="fracBtn" onclick="verifyFrac()">OK</button>
+<p id="alert2">Waiting for input ...</p>
+
+<button id="nextQ" onclick="newQ()">Next</button>
+
+<script>
+
+var score = 0;
+
+   var w = Math.floor(Math.random() * 12) + 1;
+   var xx = (Math.floor(Math.random() * 12) + 1) * w;
+   var yy = (Math.floor(Math.random() * 12) + 1) * w;
+   var x = Math.min(xx,yy);
+   var y = Math.max(xx,yy);
+   document.getElementById("demo1").innerHTML = x; 
+   document.getElementById("demo2").innerHTML = y;
+   document.getElementById("demo3").innerHTML = x;
+   document.getElementById("demo4").innerHTML = y;
+
+   document.getElementById("score").innerHTML = score;
+
+function newQ(){
+   
+   w = Math.floor(Math.random() * 12) + 1;
+   xx = (Math.floor(Math.random() * 12) + 1) * w;
+   yy = (Math.floor(Math.random() * 12) + 1) * w;
+   x = Math.min(xx,yy);
+   y = Math.max(xx,yy);
+   document.getElementById("demo1").innerHTML = x;
+   document.getElementById("demo2").innerHTML = y;
+   document.getElementById("demo3").innerHTML = x;
+   document.getElementById("demo4").innerHTML = y;
+   click = 0;
+
+   document.getElementById("hcm").value = "";
+   document.getElementById("numer").value = ""; 
+   document.getElementById("denom").value = "";
+   document.getElementById("alert1").innerHTML = "Waiting for input ...";
+   document.getElementById("alert2").innerHTML = "Waiting for input ...";
+
+document.getElementById("nextQ").disabled = true;
+}
+
+
+var input = document.getElementById("hcm");
+input.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("hcmBtn").click();
+    }
+});
+
+var input2 = document.getElementById("denom");
+
+input2.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("fracBtn").click();
+    }
+});
+
+
+function findHCF(x, y) {
+
+   // If the input numbers are less than 1 return an error message.
+   if (x < 1 || y < 1) {
+      return "Please enter values greater than zero.";
+   }
+
+   // If the input numbers are not integers return an error message.
+   if (x != Math.round(x) || y != Math.round(y)) {
+      return "Please enter whole numbers.";
+   }
+
+   // Now apply Euclid's algorithm to the two numbers.
+   while (Math.max(x, y) % Math.min(x, y) != 0) {
+      if (x > y) {
+         x %= y;
+      }
+      else {
+         y %= x;
+      }
+   }
+   
+   // When the while loop finishes the minimum of x and y is the HCF.
+   return Math.min(x, y);
+
+}
+
+function verifyHCF() {
+
+   var rightAns = findHCF(x,y);
+   var ans = document.getElementById("hcm").value;
+
+   if (ans == rightAns) {
+      document.getElementById("alert1").innerHTML = "Correct! Well done!";
+      nocont=true;
+   }
+   else {
+       document.getElementById("alert1").innerHTML = "Try again ... you will get there ...";
+   }
+
+}
+
+function simplifyFrac(x,y) {
+   var HCF = findHCF(x,y);
+    
+   var numer = ~~(x/HCF);
+   var denom = ~~(y/HCF);
+
+   return {
+      n : numer,
+      d : denom
+   } 
+   
+}
+
+click = 0;
+
+function verifyFrac() {
+   var sf = simplifyFrac(x,y);
+   var n = sf.n;
+   var d = sf.d;
+
+   var numAns = document.getElementById("numer").value;
+   var denAns = document.getElementById("denom").value;
+
+
+   if (numAns == n && denAns == d) {
+      document.getElementById("alert2").innerHTML = "Correct! Well done!";
+      click++;
+      if (click == 1) {
+         score++;
+      }
+      document.getElementById("score").innerHTML = score;
+      document.getElementById("nextQ").disabled = false;
+      
+      if (n == 1 && d == 1) {
+          window.alert("By the way, 1/1 is really just the number 1. So when you calculate the answer 1/1, be sure to only, only, only write 1.");
+      }
+
+if (score % 10 == 0 && score > 0) {
+   window.alert("You got " + score + " points! Keep up with the good work!");
+}
+
+if (score % 100 == 0 && score > 0) {
+   window.alert("You got " + score + " points! I am so proud of you!");
+}
+   }
+   else {
+       document.getElementById("alert2").innerHTML = "Try again ... you will get there ...";
+   }
+}
+
+document.getElementById("nextQ").disabled = true;
+
+if (score % 10 == 0 && score > 0) {
+   window.alert("You got " + score + " points! Keep up with the good work!");
+}
+
+if (score % 100 == 0 && score > 0) {
+   window.alert("You got " + score + " points! I am so proud of you!");
+}
+
+</script>
+
+
+
+
+</body>
+</html>
